@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BookMarkService {
+public class BookmarkService {
 
-    private final BookMarkRepository repository;
+    private final BookmarkRepository repository;
 
     @Transactional(readOnly = true)
-    public BookMarksDTO getAllBookMarks(Integer page, Integer pageSize) {
+    public BookmarksDTO getAllBookMarks(Integer page, Integer pageSize) {
         int pageNo = page < 1 ? 0 : page - 1;
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.Direction.DESC, "createdAt");
-        return new BookMarksDTO(this.repository.findAll(pageable));
+        return new BookmarksDTO(this.repository.findBookmarks(pageable));
     }
 }

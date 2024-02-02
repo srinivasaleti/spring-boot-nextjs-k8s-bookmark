@@ -14,14 +14,14 @@ import java.time.Instant;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookMark {
+public class Bookmark {
     @Id
     @SequenceGenerator(name = "bm_id_seq_gen", sequenceName = "bm_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bm_id_seq_gen")
     private Long id;
 
     @Column(nullable = false)
-    private String tilte;
+    private String title;
     @Column(nullable = false)
     private String url;
     private Instant createdAt;
