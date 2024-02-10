@@ -3,16 +3,17 @@ package com.srinivas.bookmarkerapi;
 import com.srinivas.bookmarkerapi.domain.Bookmark;
 import com.srinivas.bookmarkerapi.domain.BookmarkRepository;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Testcontainers
 class BookmarkerApiApplicationTests {
-
 
     @Autowired
     private MockMvc mvc;
@@ -34,12 +35,17 @@ class BookmarkerApiApplicationTests {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
-    private List<Bookmark> bookmarks;
+    @Container
+    private static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer("postgres:15-alpine")
+            .withDatabaseName("foo")
+            .withUsername("foo")
+            .withPassword("secret");
 
     @BeforeEach
     void setup() {
+        postgresqlContainer.start();
         bookmarkRepository.deleteAllInBatch();
-        bookmarks = new ArrayList<>();
+        List<Bookmark> bookmarks = new ArrayList<>();
 
         bookmarks.add(new Bookmark(null, "SivaLabs", "https://sivalabs.in", Instant.now()));
         bookmarks.add(new Bookmark(null, "SpringBlog", "https://spring.io/blog", Instant.now()));
@@ -59,23 +65,14 @@ class BookmarkerApiApplicationTests {
         bookmarkRepository.saveAll(bookmarks);
     }
 
+    @AfterAll
+    static void afterAll() {
+        postgresqlContainer.stop();
+    }
+
     @ParameterizedTest
-    @CsvSource({
-            "1,15,2,1,true,false,true,false",
-            "2,15,2,2,false,true,false,true"
-    })
-    void shouldGetBookmarks(int pageNo, int totalElements, int totalPages, int currentPage,
-                            boolean isFirst, boolean isLast,
-                            boolean hasNext, boolean hasPrevious) throws Exception {
-        mvc.perform(get("/api/bookmarks?page=" + pageNo + "&pageSize=10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalElements", CoreMatchers.equalTo(totalElements)))
-                .andExpect(jsonPath("$.totalPages", CoreMatchers.equalTo(totalPages)))
-                .andExpect(jsonPath("$.currentPage", CoreMatchers.equalTo(currentPage)))
-                .andExpect(jsonPath("$.isFirst", CoreMatchers.equalTo(isFirst)))
-                .andExpect(jsonPath("$.isLast", CoreMatchers.equalTo(isLast)))
-                .andExpect(jsonPath("$.hasNext", CoreMatchers.equalTo(hasNext)))
-                .andExpect(jsonPath("$.hasPrevious", CoreMatchers.equalTo(hasPrevious)))
-        ;
+    @CsvSource({"1,15,2,1,true,false,true,false", "2,15,2,2,false,true,false,true"})
+    void shouldGetBookmarks(int pageNo, int totalElements, int totalPages, int currentPage, boolean isFirst, boolean isLast, boolean hasNext, boolean hasPrevious) throws Exception {
+        mvc.perform(get("/api/bookmarks?page=" + pageNo + "&pageSize=10")).andExpect(status().isOk()).andExpect(jsonPath("$.totalElements", CoreMatchers.equalTo(totalElements))).andExpect(jsonPath("$.totalPages", CoreMatchers.equalTo(totalPages))).andExpect(jsonPath("$.currentPage", CoreMatchers.equalTo(currentPage))).andExpect(jsonPath("$.isFirst", CoreMatchers.equalTo(isFirst))).andExpect(jsonPath("$.isLast", CoreMatchers.equalTo(isLast))).andExpect(jsonPath("$.hasNext", CoreMatchers.equalTo(hasNext))).andExpect(jsonPath("$.hasPrevious", CoreMatchers.equalTo(hasPrevious)));
     }
 }
