@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class BookmarksDTO {
     private List<BookmarkDTO> data;
-    private long totalElement;
+    private long totalElements;
     private int totalPages;
     private int currentPage;
     @JsonProperty("isFirst")
@@ -19,16 +19,16 @@ public class BookmarksDTO {
     @JsonProperty("isLast")
     private boolean isLast;
     private boolean hasNext;
-    private boolean hasPrev;
+    private boolean hasPrevious;
 
     public BookmarksDTO(Page<BookmarkDTO> bookMarksPage) {
         this.setData(bookMarksPage.getContent());
-        this.setTotalElement(bookMarksPage.getTotalElements());
+        this.setTotalElements(bookMarksPage.getTotalElements());
         this.setTotalPages(bookMarksPage.getTotalPages());
         this.setCurrentPage(bookMarksPage.getNumber() + 1);
         this.setFirst(bookMarksPage.isFirst());
         this.setLast(bookMarksPage.isLast());
         this.setHasNext(bookMarksPage.hasNext());
-        this.setHasPrev(bookMarksPage.hasPrevious());
+        this.setHasPrevious(bookMarksPage.hasPrevious());
     }
 }
