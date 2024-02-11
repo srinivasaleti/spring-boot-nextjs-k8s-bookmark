@@ -56,7 +56,7 @@ class BookmarkerApiApplicationTests {
         bookmarkRepository.deleteAllInBatch();
         List<Bookmark> bookmarks = new ArrayList<>();
 
-        bookmarks.add(new Bookmark(null, "SivaLabs", "https://sivalabs.in", Instant.now()));
+        bookmarks.add(new Bookmark(null, "Test", "https://test.in", Instant.now()));
         bookmarks.add(new Bookmark(null, "SpringBlog", "https://spring.io/blog", Instant.now()));
         bookmarks.add(new Bookmark(null, "Quarkus", "https://quarkus.io/", Instant.now()));
         bookmarks.add(new Bookmark(null, "Micronaut", "https://micronaut.io/", Instant.now()));
