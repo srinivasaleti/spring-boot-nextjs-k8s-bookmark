@@ -1,3 +1,5 @@
+import { BookmarkList } from "./components/BookmarkList";
+
 export default function Home() {
   return (
     <main>
@@ -11,6 +13,7 @@ export default function Home() {
       >
         Bookmarks
       </div>
+      <BookmarkList />
     </main>
   );
 }
