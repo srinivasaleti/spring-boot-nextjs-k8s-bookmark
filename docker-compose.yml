@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  app:
+  api:
     image: 'bookmarker-api'
     build:
       context: ./bookmarker-api
@@ -26,6 +26,18 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
+  ui:
+    image: bookmarker-ui
+    build:
+      context: ./bookmarker-ui
+      target: dev
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    environment:
+      - NEXT_PUBLIC_BOOKMARK_URL=http://localhost:8082
+    ports:
+      - 3000:3000
 volumes:
   db:
     driver: local

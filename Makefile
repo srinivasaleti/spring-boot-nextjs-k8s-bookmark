@@ -1,10 +1,10 @@
 .PHONY: up
 up:
-	cd bookmarker-api && ./gradlew build
-	docker-compose up &
+	cd bookmarker-api && ./gradlew clean build
+	docker-compose up --build &
 
 build:
-	cd bookmarker-api && ./gradlew build
+	cd bookmarker-api && ./gradlew clean build
 
 down:
 	docker-compose down
