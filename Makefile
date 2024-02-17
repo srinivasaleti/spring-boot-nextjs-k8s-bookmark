@@ -1,3 +1,5 @@
+include kind/kind.mk
+
 .PHONY: up
 up:
 	cd bookmarker-api && ./gradlew clean build
