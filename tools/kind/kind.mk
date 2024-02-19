@@ -1,6 +1,6 @@
 kind-up:
 	@echo "Initializing Kubernetes cluster..."
-	@kind create cluster --config kind/kind-config.yml
+	@kind create cluster --config tools/kind/kind-config.yml
 	@echo "\n-----------------------------------------------------\n"
 	@echo "Installing NGINX Ingress..."
 	@kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
