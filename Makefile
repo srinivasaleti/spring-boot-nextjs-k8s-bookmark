@@ -1,4 +1,5 @@
 include tools/kind/kind.mk
+include tools/docker/docker.mk
 
 .PHONY: up
 up:
