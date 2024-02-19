@@ -1,4 +1,4 @@
-include kind/kind.mk
+include tools/kind/kind.mk
 
 .PHONY: up
 up:
