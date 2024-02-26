@@ -6,5 +6,3 @@ data:
   postgres_host: postgres
   postgres_port: "5432"
   postgres_dbname: postgres
-  postgres_username: postgres
-  postgres_password: postgres
