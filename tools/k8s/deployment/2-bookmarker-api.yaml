@@ -17,3 +17,31 @@ spec:
       containers:
         - image: srinivra/bookmarker-api
           name: bookmarker-api
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: prod
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: bookmarker-config
+                key: postgres_host
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: bookmarker-config
+                key: postgres_port
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: bookmarker-config
+                key: postgres_dbname
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: bookmarker-secrets
+                key: postgres_username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bookmarker-secrets
+                key: postgres_password

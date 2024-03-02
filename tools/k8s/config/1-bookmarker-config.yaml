@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: bookmarker-config
 data:
-  postgres_host: postgres
+  postgres_host: postgres-service
   postgres_port: "5432"
   postgres_dbname: postgres
