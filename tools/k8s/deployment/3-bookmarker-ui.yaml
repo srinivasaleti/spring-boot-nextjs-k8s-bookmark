@@ -19,4 +19,4 @@ spec:
           name: bookmarker-ui
           env:
           - name: NEXT_PUBLIC_BOOKMARK_URL
-            value: http://localhost:18080
+            value: http://localhost/bookmarker-api
