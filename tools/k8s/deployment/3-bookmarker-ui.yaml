@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookmarker-ui
+  labels:
+    app: bookmarker-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookmarker-ui
+  template:
+    metadata:
+      labels:
+        app: bookmarker-ui
+    spec:
+      containers:
+        - image: srinivra/bookmarker-ui
+          name: bookmarker-ui
+          env:
+          - name: NEXT_PUBLIC_BOOKMARK_URL
+            value: http://localhost:18080
